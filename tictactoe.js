@@ -74,7 +74,7 @@ class App {
   }
   
   checkWinner() {
-    if (this.checkCols() || this.checkRows()) {
+    if (this.checkCols() || this.checkRows() || this.checkMajor() || this.checkMinor()) {
       console.log(this.turn, 'WINS');
       this._rl.close();
     }
@@ -84,6 +84,22 @@ class App {
     const { board } = this;
     let winner = 0;
     let col = 0;
+    for (let row = 0; row < board.length; row += 1) {
+      if (board[row][col] === 'X') {
+        winner += 1;
+      } else if (board[row][col] === 'O') {
+        winner -= 1;
+      }
+    }
+
+    return this.isWinner(winner);
+  }
+
+  checkMinor() {
+    const { board } = this;
+    let winner = 0;
+    let col = board.length - 1;
+
     for (let row = 0; row < board.length; row += 1) {
       if (board[row][col] === 'X') {
         winner += 1;
