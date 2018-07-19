@@ -1,5 +1,15 @@
 const readline = require('readline');
 
+const isWinner = (winner) => {
+  if (winner === 3) {
+    return 'X';
+  } else if (winner === -3) {
+    return 'O';
+  } else {
+    return false;
+  }
+}
+
 class App {
   constructor() {
     this.board = [
@@ -32,8 +42,6 @@ class App {
       })
     });
   }
-
-  
 
   checkWinner(winner) {
     if (winner) {
