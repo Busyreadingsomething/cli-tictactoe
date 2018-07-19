@@ -80,6 +80,21 @@ class App {
     }
   }
 
+  checkMajor() {
+    const { board } = this;
+    let winner = 0;
+    let col = 0;
+    for (let row = 0; row < board.length; row += 1) {
+      if (board[row][col] === 'X') {
+        winner += 1;
+      } else if (board[row][col] === 'O') {
+        winner -= 1;
+      }
+    }
+
+    return this.isWinner(winner);
+  }
+
   makeMove() {
     this._rl.question('\nPick a ROW: ', (x) => {
       this._rl.question('\nPick a COLUMN: ', (y) => {
