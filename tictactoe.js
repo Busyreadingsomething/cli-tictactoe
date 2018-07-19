@@ -33,6 +33,8 @@ class App {
     });
   }
 
+  
+
   checkWinner(winner) {
     if (winner) {
       console.log(this.winner);
