@@ -42,10 +42,41 @@ class App {
   checkRows() {
     const { board } = this;
     for (const row of board) {
-      let winner = this.checkRow(row);
+      const winner = this.checkRow(row);
       if (winner) {
         console.log('WINNER');
       }
+    }
+  }
+
+  checkCol(col) {
+    const { board } = this;
+    let winner = 0;
+    for (const row of board) {
+      if (row[col] === 'X') {
+        winner += 1;
+      } else if (row[col] === 'O') {
+        winner -= 1;
+      }
+    }
+
+    return this.isWinner(winner);
+  }
+
+  checkCols() {
+    const { board } = this;
+    for (let col = 0; col < board.length; col += 1) {
+      const winner = this.checkCol(col);
+      if (winner) {
+        console.log('WINNER');
+      }
+    }
+  }
+  
+  checkWinner() {
+    if (this.checkCols() || this.checkRows()) {
+      console.log(this.turn, 'WINS');
+      this._rl.close();
     }
   }
 
@@ -57,6 +88,7 @@ class App {
         const col = parseInt(y, 10);
         if (this.board[row][col] === '_') {
           this.board[row][col] = this.turn;
+          this.checkWinner();
           this.turn = this.turn === 'X' ? 'O' : 'X';
           this.render();
         } else {
@@ -67,12 +99,6 @@ class App {
     });
   }
 
-  checkWinner(winner) {
-    if (winner) {
-      console.log(this.winner);
-      this._rl.close();
-    }
-  }
 
   render() {
     const board = this.board.map(row => JSON.stringify(row)).join('\n\n');
