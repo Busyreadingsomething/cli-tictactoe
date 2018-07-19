@@ -1,15 +1,5 @@
 const readline = require('readline');
 
-const isWinner = (winner) => {
-  if (winner === 3) {
-    return 'X';
-  } else if (winner === -3) {
-    return 'O';
-  } else {
-    return false;
-  }
-}
-
 class App {
   constructor() {
     this.board = [
@@ -23,6 +13,40 @@ class App {
       input: process.stdin,
       output: process.stdout,
     });
+  }
+
+  isWinner(winner) {
+    if (winner === 3) {
+      return 'X';
+    } else if (winner === -3) {
+      return 'O';
+    } else {
+      return false;
+    }
+  }
+
+  checkRow(row) {
+    let winner = 0;
+  
+    for (const space of row) {
+      if (space === 'X') {
+        winner += 1;
+      } else if (space === 'O') {
+        winner -= 1;
+      }
+    }
+  
+    return this.isWinner(winner);
+  }
+
+  checkRows() {
+    const { board } = this;
+    for (const row of board) {
+      let winner = this.checkRow(row);
+      if (winner) {
+        console.log('WINNER');
+      }
+    }
   }
 
   makeMove() {
