@@ -68,16 +68,13 @@ class App {
     for (let col = 0; col < board.length; col += 1) {
       const winner = this.checkCol(col);
       if (winner) {
-        console.log('WINNER');
+        return winner;
       }
     }
   }
   
   checkWinner() {
-    if (this.checkCols() || this.checkRows() || this.checkMajor() || this.checkMinor()) {
-      console.log(this.turn, 'WINS');
-      this._rl.close();
-    }
+    return this.checkCols() || this.checkRows() || this.checkMajor() || this.checkMinor();
   }
 
   checkMajor() {
@@ -90,6 +87,7 @@ class App {
       } else if (board[row][col] === 'O') {
         winner -= 1;
       }
+      col += 1;
     }
 
     return this.isWinner(winner);
@@ -106,6 +104,7 @@ class App {
       } else if (board[row][col] === 'O') {
         winner -= 1;
       }
+      col -= 1;
     }
 
     return this.isWinner(winner);
@@ -119,9 +118,13 @@ class App {
         const col = parseInt(y, 10);
         if (this.board[row][col] === '_') {
           this.board[row][col] = this.turn;
-          this.checkWinner();
-          this.turn = this.turn === 'X' ? 'O' : 'X';
-          this.render();
+          if (this.checkWinner()) {
+            console.log(this.turn, 'WINS');
+            this._rl.close();
+          } else {
+            this.turn = this.turn === 'X' ? 'O' : 'X';
+            this.render();
+          }
         } else {
           console.log('-----TRY AGAIN-----');
           this.render();
@@ -132,6 +135,7 @@ class App {
 
 
   render() {
+    debugger;
     const board = this.board.map(row => JSON.stringify(row)).join('\n\n');
     console.log(board);
     this.makeMove();
